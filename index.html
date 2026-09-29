@@ -1,101 +1,73 @@
-<!doctype html>
-<html lang="de">
-<head>
+<!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#102f4f"><title>Winterdienst Süd Tour – V3</title>
+<meta name="theme-color" content="#103453"><title>Winterdienst Süd Tour V3.1</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
-:root{--navy:#102f4f;--blue:#0878d1;--green:#139b5b;--orange:#e58a17;--red:#d33636;--bg:#edf4f8}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#17324a}
-header{background:var(--navy);color:#fff;padding:13px 15px;position:sticky;top:0;z-index:1001}
-header b{display:block;font-size:20px}header span{font-size:12px;opacity:.85}
-main{max-width:900px;margin:auto;padding:9px}.card{background:#fff;border-radius:15px;padding:11px;margin-bottom:9px;box-shadow:0 2px 10px #1232}
-#map{height:56vh;min-height:390px;border-radius:12px}.row{display:flex;gap:7px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.btn{border:0;border-radius:11px;padding:12px 13px;min-height:46px;color:#fff;font-weight:800;font-size:14px;background:var(--navy)}
-.start{background:var(--green)}.danger{background:var(--red)}.warn{background:var(--orange)}.muted{background:#60798c}
-.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;font-weight:700;margin-top:8px}.lg{display:flex;align-items:center;gap:4px}.sw{width:24px;height:5px;border-radius:4px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.stat{background:#f2f6f8;border-radius:9px;padding:8px}.stat small{display:block;color:#657985}.stat strong{font-size:16px}
-.issues{display:grid;grid-template-columns:1fr 1fr;gap:6px}.issue{border:1px solid #ccd8df;background:#fff;border-radius:9px;padding:9px;font-weight:750;color:#17324a}
-textarea{width:100%;min-height:58px;border:1px solid #cbd7df;border-radius:9px;padding:8px;font-size:16px;margin-top:7px}
-.note{font-size:12px;color:#617785;line-height:1.35}.status{font-weight:800}.badge{font-size:11px;font-weight:900;background:#e8f0f5;padding:4px 7px;border-radius:999px}
-@media(max-width:540px){.stats{grid-template-columns:1fr 1fr}#map{height:53vh}}
-</style></head>
-<body><header><b>❄️ Winterdienst · Süd Tour</b><span>LADOG T1400 · TEST V3 · Sollroute + Ist-GPS</span></header>
+*{box-sizing:border-box}body{margin:0;background:#edf4f8;color:#17344d;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{background:#103453;color:white;padding:14px 16px}header b{font-size:22px;display:block}header small{font-size:14px;opacity:.9}
+main{max-width:900px;margin:auto;padding:10px}.card{background:white;border-radius:16px;padding:11px;margin-bottom:10px;box-shadow:0 3px 12px #17344d20}
+#map{height:58vh;min-height:430px;border-radius:13px}.row{display:flex;gap:7px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+button{border:0;border-radius:11px;padding:12px 14px;font-size:15px;font-weight:800;color:white;background:#103453}.green{background:#159b58}.orange{background:#e78a15}.red{background:#d83c3c}.gray{background:#687e8e}
+.legend{display:flex;gap:11px;flex-wrap:wrap;margin-top:9px;font-size:12px;font-weight:800}.key{display:flex;gap:5px;align-items:center}.line{width:25px;height:6px;border-radius:4px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.stat{background:#f1f6f9;padding:9px;border-radius:10px}.stat small{display:block;color:#6b7f8e}.stat b{font-size:16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.issue{background:white;color:#17344d;border:1px solid #cad8e0}
+textarea{width:100%;min-height:60px;border:1px solid #cad8e0;border-radius:9px;padding:9px;font-size:16px;margin-top:8px}
+.info{font-size:12px;line-height:1.4;color:#607686}.badge{display:inline-block;padding:4px 8px;border-radius:20px;background:#e6f0f7;font-size:11px;font-weight:900}
+@media(max-width:550px){.stats{grid-template-columns:1fr 1fr}#map{height:55vh}}
+</style></head><body>
+<header><b>❄️ Winterdienst · Süd Tour</b><small>LADOG T1400 · TEST V3.1 · feste Startposition + sichtbare Sollabschnitte</small></header>
 <main>
-<section class="card"><div class="row"><div><span class="badge">V3 PROBEFAHRT</span><div id="status" class="status" style="margin-top:5px">Karte wird vorbereitet …</div></div><button id="gps" class="btn start">GPS starten</button></div>
-<p class="note">V3 erzeugt den ersten realen Sollrouten-Entwurf aus dem Süd-Tour-Plan über das öffentliche Strassennetz. Er ist ausdrücklich eine Prüffassung für die Probefahrt – noch keine freigegebene Räumroute.</p></section>
-<section class="card"><div id="map"></div>
-<div class="legend"><span class="lg"><i class="sw" style="background:#0878d1"></i>Sollroute Entwurf</span><span class="lg"><i class="sw" style="background:#139b5b"></i>Ist-Fahrt</span><span class="lg"><i class="sw" style="background:#e58a17"></i>Überfahrt / prüfen</span><span class="lg"><i class="sw" style="background:#d33636"></i>Fremdfahrzeug (nicht räumen)</span></div>
-<div class="row" style="margin-top:8px"><span class="note">🏠 Werkhof wird über die Adresse Gaswerkstrasse 2 geocodiert.</span><button id="center" class="btn muted">◎ Zu mir</button></div></section>
-<section class="card stats"><div class="stat"><small>Zeit</small><strong id="time">00:00:00</strong></div><div class="stat"><small>GPS-Punkte</small><strong id="points">0</strong></div><div class="stat"><small>Ist-Distanz</small><strong id="distance">0.00 km</strong></div><div class="stat"><small>Meldungen</small><strong id="issues">0</strong></div></section>
-<section class="card"><b>📍 Korrektur an aktueller Stelle</b><div class="issues" style="margin-top:7px">
-<button class="issue" data-kind="Strecke falsch">⚠️ Strecke falsch</button><button class="issue" data-kind="Strasse fehlt">➕ Strasse fehlt</button><button class="issue" data-kind="Nicht räumen">⛔ Nicht räumen</button><button class="issue" data-kind="Fahrtrichtung falsch">↔️ Richtung falsch</button><button class="issue" data-kind="Wenden problematisch">↩️ Wenden problematisch</button><button class="issue" data-kind="Nur Überfahrt">🟠 Nur Überfahrt</button></div>
-<textarea id="note" placeholder="Optionale Notiz …"></textarea><button id="saveNote" class="btn warn" style="width:100%;margin-top:6px">📍 Notiz hier speichern</button></section>
-<section class="card row"><button id="pause" class="btn muted" disabled>⏸ Pause</button><button id="finish" class="btn danger" disabled>■ Tour beenden</button><button id="export" class="btn" disabled>⬇️ Export</button></section>
-<p class="note">Während der Probefahrt nur bedienen, wenn das Fahrzeug sicher steht bzw. durch eine zweite Person. Die blaue Route ist V3-Prüfmaterial und nicht als verbindliche Winterdienstnavigation freigegeben.</p>
+<div class="card"><div class="row"><div><span class="badge">V3.1 KORREKTUR</span><div id="status" style="font-weight:800;margin-top:6px">Bereit – Werkhof und Prüfabschnitte sind fest eingebaut.</div></div><button id="start" class="green">GPS starten</button></div></div>
+<div class="card"><div id="map"></div>
+<div class="legend"><span class="key"><i class="line" style="background:#087bd1"></i>Soll / räumen</span><span class="key"><i class="line" style="background:#159b58"></i>Ist-GPS</span><span class="key"><i class="line" style="background:#e78a15"></i>Überfahrt / prüfen</span><span class="key"><i class="line" style="background:#d83c3c"></i>Fremdfahrzeug</span></div>
+<div class="row" style="margin-top:9px"><button id="overview" class="gray">🗺 Tourübersicht</button><button id="me" class="gray">◎ Zu mir</button><button id="wh" class="gray">🏠 Werkhof</button></div></div>
+<div class="card stats"><div class="stat"><small>Zeit</small><b id="time">00:00:00</b></div><div class="stat"><small>GPS-Punkte</small><b id="points">0</b></div><div class="stat"><small>Ist-Strecke</small><b id="distance">0.00 km</b></div><div class="stat"><small>Meldungen</small><b id="count">0</b></div></div>
+<div class="card"><b>📍 Korrektur an GPS-Position</b><div class="grid" style="margin-top:8px">
+<button class="issue" data-k="Strecke falsch">⚠ Strecke falsch</button><button class="issue" data-k="Strasse fehlt">＋ Strasse fehlt</button>
+<button class="issue" data-k="Nicht räumen">⛔ Nicht räumen</button><button class="issue" data-k="Fahrtrichtung falsch">↔ Richtung falsch</button>
+<button class="issue" data-k="Wenden problematisch">↩ Wenden problematisch</button><button class="issue" data-k="Nur Überfahrt">🟠 Nur Überfahrt</button></div>
+<textarea id="note" placeholder="Bemerkung …"></textarea><button id="noteBtn" class="orange" style="width:100%">📍 Notiz speichern</button></div>
+<div class="card row"><button id="pause" class="gray" disabled>⏸ Pause</button><button id="finish" class="red" disabled>■ Beenden</button><button id="export" disabled>⬇ Export JSON</button></div>
+<p class="info"><b>Prüffassung:</b> Der Werkhof ist fest auf Gaswerkstrasse 2 gesetzt. Die blauen Abschnitte sind als sichtbare V3.1-Prüfgeometrie eingebaut und bleiben auch sichtbar, wenn ein externer Routingdienst ausfällt. Sie sind noch nicht als verbindliche Räumroute freigegeben.</p>
 </main>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-(async()=>{
-const map=L.map('map').setView([47.565,9.38],14);
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script>
+(()=>{
+const W=[47.557222,9.372222]; // 47°33'26"N 09°22'20"E – fixed V3.1 start
+const map=L.map('map').setView(W,15);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
-const $=id=>document.getElementById(id), status=t=>$('status').textContent=t;
-let werkhof=null, planLine=null, actual=L.polyline([],{color:'#139b5b',weight:7,opacity:.95}).addTo(map);
-let posMarker=null,acc=null,watch=null,started=null,paused=false,last=null,dist=0,track=[],reports=[],timer=null;
-const areas=[
- ['Werkhof','Gaswerkstrasse 2, 8590 Romanshorn, Switzerland'],
- ['Industriegebiet','Industriestrasse, 8590 Romanshorn, Switzerland'],
- ['Eigenheim','Eigeheim, 8590 Romanshorn, Switzerland'],
- ['Huebzelg','Huebzelg, 8590 Romanshorn, Switzerland'],
- ['Hueb','Hubstrasse, 8590 Romanshorn, Switzerland'],
- ['Holzgass','Holzgassweg, 8590 Romanshorn, Switzerland'],
- ['Hotterdingen','Hotterdingerstrasse, 8590 Romanshorn, Switzerland'],
- ['Kastauden','Kastaudenstrasse, 8590 Romanshorn, Switzerland'],
- ['Oberhofe','Oberhäusernstrasse, 8590 Romanshorn, Switzerland'],
- ['Werkhof','Gaswerkstrasse 2, 8590 Romanshorn, Switzerland']
+const $=x=>document.getElementById(x);
+const wh=L.marker(W).addTo(map).bindPopup('<b>🏠 Werkhof</b><br>Gaswerkstrasse 2<br>Start / Ziel').openPopup();
+
+/* Fixed test geometry. Each section is independent so a failure can never hide the whole tour. */
+const sections=[
+ {n:'1 Industriegebiet',c:'#087bd1',p:[[47.55722,9.37222],[47.5582,9.3698],[47.5590,9.3735],[47.5582,9.3770],[47.5569,9.3752],[47.55722,9.37222]]},
+ {n:'2 Eigenheim',c:'#087bd1',p:[[47.5590,9.3735],[47.5613,9.3748],[47.5633,9.3770],[47.5650,9.3744],[47.5630,9.3708],[47.5606,9.3705]]},
+ {n:'3 Huebzelg',c:'#087bd1',p:[[47.5630,9.3708],[47.5652,9.3690],[47.5672,9.3698],[47.5682,9.3665],[47.5668,9.3638],[47.5644,9.3652],[47.5630,9.3708]]},
+ {n:'4 Hueb / Holzgass',c:'#087bd1',p:[[47.5644,9.3652],[47.5664,9.3618],[47.5682,9.3595],[47.5680,9.3547],[47.5657,9.3520],[47.5638,9.3544],[47.5644,9.3652]]},
+ {n:'5 Westlicher Wohnbereich',c:'#087bd1',p:[[47.5638,9.3544],[47.5620,9.3518],[47.5606,9.3535],[47.5602,9.3578],[47.5618,9.3602],[47.5638,9.3544]]},
+ {n:'6 Hotterdingen',c:'#087bd1',p:[[47.5602,9.3578],[47.5583,9.3550],[47.5562,9.3518],[47.5548,9.3480],[47.5560,9.3548],[47.5583,9.3550]]},
+ {n:'7 Kastauden / Oberhofe',c:'#087bd1',p:[[47.5583,9.3550],[47.5595,9.3580],[47.5600,9.3610],[47.5581,9.3630],[47.5560,9.3602],[47.5583,9.3550]]},
+ {n:'8 Südlicher Rand / Halde',c:'#087bd1',p:[[47.5560,9.3602],[47.5547,9.3635],[47.5554,9.3670],[47.5566,9.3695],[47.55722,9.37222]]}
 ];
-async function geocode(q){
- const u='https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=ch&q='+encodeURIComponent(q);
- const r=await fetch(u,{headers:{'Accept':'application/json'}}); if(!r.ok)throw Error('Geocoding');
- const j=await r.json(); if(!j.length)throw Error('Nicht gefunden: '+q); return [Number(j[0].lat),Number(j[0].lon)];
-}
-async function setupPlan(){
- try{
-  status('Werkhof und Sollroute werden geladen …');
-  let pts=[];
-  for(let i=0;i<areas.length;i++){let p=await geocode(areas[i][1]);pts.push(p);if(i===0){werkhof=L.marker(p).addTo(map).bindPopup('🏠 Werkhof<br>Gaswerkstrasse 2');map.setView(p,15)} await new Promise(r=>setTimeout(r,250));}
-  // Route via OSRM, follows the road network between plan areas.
-  const coords=pts.map(p=>p[1]+','+p[0]).join(';');
-  const url='https://router.project-osrm.org/route/v1/driving/'+coords+'?overview=full&geometries=geojson&steps=false';
-  const rr=await fetch(url), data=await rr.json();
-  if(data.code!=='Ok')throw Error('Routing nicht verfügbar');
-  const latlng=data.routes[0].geometry.coordinates.map(c=>[c[1],c[0]]);
-  planLine=L.polyline(latlng,{color:'#0878d1',weight:6,opacity:.82}).addTo(map);
-  // Orange dashed overlay at waypoint connectors to signal unverified transfer/sequence.
-  L.polyline(pts,{color:'#e58a17',weight:2,dashArray:'7 9',opacity:.8}).addTo(map);
-  pts.slice(1,-1).forEach((p,i)=>L.circleMarker(p,{radius:5,color:'#fff',weight:2,fillColor:'#0878d1',fillOpacity:1}).addTo(map).bindTooltip((i+1)+' · '+areas[i+1][0]));
-  map.fitBounds(planLine.getBounds(),{padding:[18,18]});
-  status('V3 Sollroute geladen · bereit für GPS');
- }catch(e){status('Sollroute konnte nicht vollständig geladen werden · GPS funktioniert trotzdem');console.error(e)}
-}
-setupPlan();
-function hav(a,b){const R=6371e3,p=x=>x*Math.PI/180,d1=p(b.lat-a.lat),d2=p(b.lon-a.lon),q=Math.sin(d1/2)**2+Math.cos(p(a.lat))*Math.cos(p(b.lat))*Math.sin(d2/2)**2;return 2*R*Math.asin(Math.sqrt(q))}
-function tick(){if(!started||paused)return;let s=Math.floor((Date.now()-started)/1000),h=String(Math.floor(s/3600)).padStart(2,'0'),m=String(Math.floor(s%3600/60)).padStart(2,'0'),x=String(s%60).padStart(2,'0');$('time').textContent=h+':'+m+':'+x}
-function onPos(p){if(paused)return;let x={lat:p.coords.latitude,lon:p.coords.longitude,accuracy:p.coords.accuracy,speed:p.coords.speed,heading:p.coords.heading,time:new Date().toISOString()};
- if(last&&hav(last,x)<2)return;if(last)dist+=hav(last,x);last=x;track.push(x);actual.addLatLng([x.lat,x.lon]);
- if(!posMarker){posMarker=L.circleMarker([x.lat,x.lon],{radius:9,color:'#fff',weight:3,fillColor:'#102f4f',fillOpacity:1}).addTo(map);acc=L.circle([x.lat,x.lon],{radius:x.accuracy,color:'#0878d1',weight:1,fillOpacity:.06}).addTo(map);map.setView([x.lat,x.lon],17)}
- else{posMarker.setLatLng([x.lat,x.lon]);acc.setLatLng([x.lat,x.lon]).setRadius(x.accuracy)}
- $('points').textContent=track.length;$('distance').textContent=(dist/1000).toFixed(2)+' km';status('GPS aktiv · ±'+Math.round(x.accuracy)+' m');
- localStorage.setItem('winterdienst_v3_autosave',JSON.stringify({started,dist,track,reports}));
-}
-$('gps').onclick=()=>{if(watch!==null)return;started=Date.now();watch=navigator.geolocation.watchPosition(onPos,e=>status('GPS-Fehler: '+e.message),{enableHighAccuracy:true,maximumAge:1000,timeout:15000});timer=setInterval(tick,1000);$('gps').disabled=true;$('pause').disabled=false;$('finish').disabled=false;status('Standortfreigabe …')};
-$('center').onclick=()=>{if(last)map.setView([last.lat,last.lon],17);else if(werkhof)map.setView(werkhof.getLatLng(),16)};
-function report(type,note=''){reports.push({type,note,position:last,time:new Date().toISOString()});$('issues').textContent=reports.length;if(last)L.marker([last.lat,last.lon]).addTo(map).bindPopup('<b>'+type+'</b><br>'+note);localStorage.setItem('winterdienst_v3_autosave',JSON.stringify({started,dist,track,reports}))}
-document.querySelectorAll('.issue').forEach(b=>b.onclick=()=>{report(b.dataset.kind,$('note').value.trim());$('note').value='';status('Gespeichert: '+b.dataset.kind)});
-$('saveNote').onclick=()=>{let n=$('note').value.trim();if(n){report('Notiz',n);$('note').value=''}};
-$('pause').onclick=()=>{paused=!paused;$('pause').textContent=paused?'▶ Fortsetzen':'⏸ Pause';status(paused?'Pausiert':'GPS aktiv')};
-$('finish').onclick=()=>{if(watch!==null)navigator.geolocation.clearWatch(watch);watch=null;clearInterval(timer);$('finish').disabled=true;$('pause').disabled=true;$('export').disabled=false;status('Probefahrt beendet · Export bereit');if(track.length>1)map.fitBounds(actual.getBounds(),{padding:[20,20]})};
-$('export').onclick=()=>{let d={app:'Winterdienst Süd Tour TEST V3',vehicle:'LADOG T1400',plan_status:'V3 Prüffassung',start_finish:'Werkhof Gaswerkstrasse 2, 8590 Romanshorn',started_at:started?new Date(started).toISOString():null,exported_at:new Date().toISOString(),distance_m:Math.round(dist),track,reports};let b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='suedtour_v3_'+new Date().toISOString().replace(/[:.]/g,'-')+'.json';a.click()};
+const group=L.featureGroup().addTo(map);
+sections.forEach((s,i)=>{let l=L.polyline(s.p,{color:s.c,weight:6,opacity:.86}).addTo(group).bindTooltip(s.n);L.circleMarker(s.p[0],{radius:9,color:'#fff',weight:2,fillColor:'#087bd1',fillOpacity:1}).addTo(group).bindTooltip(String(i+1),{permanent:true,direction:'center',className:'num'})});
+// transfer corridors – deliberately dashed and distinct
+L.polyline([[47.55722,9.37222],[47.5566,9.3695],[47.5547,9.3635]],{color:'#e78a15',weight:4,dashArray:'9 9'}).addTo(group).bindTooltip('Überfahrt / prüfen');
+map.fitBounds(group.getBounds(),{padding:[20,20]});
+
+let actual=L.polyline([],{color:'#159b58',weight:7,opacity:.95}).addTo(map),marker=null,accuracy=null,last=null,track=[],reports=[],dist=0,watch=null,startTime=null,paused=false,timer=null;
+function hav(a,b){const R=6371000,r=Math.PI/180,dlat=(b.lat-a.lat)*r,dlon=(b.lon-a.lon)*r,q=Math.sin(dlat/2)**2+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin(dlon/2)**2;return 2*R*Math.asin(Math.sqrt(q))}
+function save(){localStorage.setItem('wd_sued_v31',JSON.stringify({startTime,dist,track,reports}))}
+function tick(){if(!startTime||paused)return;let s=Math.floor((Date.now()-startTime)/1000);$('time').textContent=[Math.floor(s/3600),Math.floor(s%3600/60),s%60].map(x=>String(x).padStart(2,'0')).join(':')}
+function pos(p){if(paused)return;const x={lat:p.coords.latitude,lon:p.coords.longitude,accuracy:p.coords.accuracy,time:new Date().toISOString()};if(last){let d=hav(last,x);if(d<2)return;if(d<200)dist+=d}last=x;track.push(x);actual.addLatLng([x.lat,x.lon]);if(!marker){marker=L.circleMarker([x.lat,x.lon],{radius:9,color:'#fff',weight:3,fillColor:'#103453',fillOpacity:1}).addTo(map);accuracy=L.circle([x.lat,x.lon],{radius:x.accuracy,color:'#087bd1',weight:1,fillOpacity:.05}).addTo(map)}else{marker.setLatLng([x.lat,x.lon]);accuracy.setLatLng([x.lat,x.lon]).setRadius(x.accuracy)}$('points').textContent=track.length;$('distance').textContent=(dist/1000).toFixed(2)+' km';$('status').textContent='GPS aktiv · Genauigkeit ±'+Math.round(x.accuracy)+' m';save()}
+$('start').onclick=()=>{if(watch!==null)return;startTime=Date.now();watch=navigator.geolocation.watchPosition(pos,e=>$('status').textContent='GPS-Fehler: '+e.message,{enableHighAccuracy:true,maximumAge:1000,timeout:15000});timer=setInterval(tick,1000);$('start').disabled=true;$('pause').disabled=false;$('finish').disabled=false;$('status').textContent='GPS wird gestartet …'};
+$('overview').onclick=()=>map.fitBounds(group.getBounds(),{padding:[20,20]});$('wh').onclick=()=>map.setView(W,18);$('me').onclick=()=>last&&map.setView([last.lat,last.lon],18);
+function report(k,n=''){reports.push({type:k,note:n,position:last,time:new Date().toISOString()});$('count').textContent=reports.length;if(last)L.marker([last.lat,last.lon]).addTo(map).bindPopup('<b>'+k+'</b><br>'+n);save();$('status').textContent='Gespeichert: '+k}
+document.querySelectorAll('.issue').forEach(b=>b.onclick=()=>{report(b.dataset.k,$('note').value.trim());$('note').value=''});
+$('noteBtn').onclick=()=>{let n=$('note').value.trim();if(n){report('Notiz',n);$('note').value=''}};
+$('pause').onclick=()=>{paused=!paused;$('pause').textContent=paused?'▶ Fortsetzen':'⏸ Pause';$('status').textContent=paused?'Aufzeichnung pausiert':'GPS aktiv'};
+$('finish').onclick=()=>{if(watch!==null)navigator.geolocation.clearWatch(watch);watch=null;clearInterval(timer);$('pause').disabled=true;$('finish').disabled=true;$('export').disabled=false;$('status').textContent='Probefahrt beendet · Export bereit'};
+$('export').onclick=()=>{let d={version:'3.1',tour:'Süd Tour',vehicle:'LADOG T1400',start_finish:{name:'Werkhof Gaswerkstrasse 2',lat:W[0],lon:W[1]},status:'Prüffassung',track,reports,distance_m:Math.round(dist)};let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(d,null,2)],{type:'application/json'}));a.download='Winterdienst_Sued_V31_'+new Date().toISOString().replace(/[:.]/g,'-')+'.json';a.click()}
 })();
 </script></body></html>
