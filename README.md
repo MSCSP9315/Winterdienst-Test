@@ -1,19 +1,19 @@
-# Winterdienst Süd Tour – TEST V2
-V2 ersetzt die schematische Karte durch eine echte interaktive OpenStreetMap/Leaflet-Karte.
+# Winterdienst Süd Tour – TEST V3
 
-## Upload
-Im bestehenden GitHub-Repository die vorhandenen Dateien durch diese Version ersetzen bzw. hochladen:
-- index.html
-- manifest.webmanifest
-- README.md
+Erste Prüffassung mit echter Straßenkarte, Werkhof-Adresse, Sollrouten-Entwurf und Live-GPS.
 
-GitHub Pages bleibt auf `main` / `/(root)`.
+## Wichtig
+Die Sollroute ist noch nicht als verbindliche Räumroute freigegeben. Sie wird aus den im Süd-Tour-Plan erkennbaren Bereichen auf das öffentliche Straßennetz geroutet und dient der Probefahrt/Korrektur.
 
-## V2
-- echte interaktive Karte
-- Live-GPS
-- grüne Ist-Spur
-- GPS-Fehlerpunkte / Notizen
+## Funktionen
+- Werkhof Gaswerkstrasse 2 per Geocoding
+- echte OpenStreetMap/Leaflet-Karte
+- blauer Sollrouten-Entwurf
+- orange Prüflinie zwischen Planbereichen
+- grüne Ist-GPS-Spur
+- GPS-Korrekturmeldungen
+- Autosave im Browser während der Fahrt
 - JSON-Export
 
-Die GPS-genaue Sollroute der Süd-Tour ist noch nicht Bestandteil dieser Version.
+## Update auf GitHub
+Die drei Dateien `index.html`, `manifest.webmanifest` und `README.md` im bestehenden Repository ersetzen. GitHub Pages bleibt unverändert.
