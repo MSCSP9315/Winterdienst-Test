@@ -1,4 +1,4 @@
-# Winterdienst Süd Tour – V3.4
-Sichtbares lokales Arbeitsnetz: 232 OSM-Abschnitte.
-Ausgeblendet/Abklärung: 962 Abschnitte aus primary/secondary/tertiary/service bzw. explizit private/no/customers.
-Wichtig: OSM-Straßenklasse ist kein Eigentumsnachweis. V3.4 verwendet deshalb einen konservativen Vorfilter; unklare Straßen werden nicht als Gemeindestraßen freigegeben.
+# Winterdienst Süd – V3.5
+Navi-Test auf Basis V3.4.
+Neu: Straßen antippen und als 1x, beide Richtungen, Überfahrt oder nicht räumen markieren; Speicherung im Browser; wirtschaftliche Test-Reihenfolge; breite Straßen erzeugen zwei Räumaufträge; GPS-Test.
+Wichtig: Die automatische Reihenfolge ist bewusst eine Test-Heuristik und keine amtlich validierte Einsatzroute. Vor Produktivbetrieb müssen Süd-Sektor, Gemeindestrassen, Fahrtrichtungen, Wendestellen und Räumprofile vollständig validiert werden.
