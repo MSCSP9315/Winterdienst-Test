@@ -1,14 +1,10 @@
-# Winterdienst Süd Tour – TEST V3.2
+# Winterdienst Süd Tour – TEST V3.3
 
-Neu gegenüber V3.1:
-- keine geraden Fantasie-Verbindungen mehr
-- echter Werkhof als Start/Ziel
-- Süd-Sektor als Polygon
-- lädt echte Straßen-Geometrien innerhalb des Sektors aus OpenStreetMap/Overpass
-- Fußwege, reine Radwege, Treppen usw. werden nicht als Straßen angezeigt
-- alle geladenen Straßen sind zunächst Kandidaten / zu prüfen
-- Live-GPS, Korrekturmeldungen, Autosave und JSON-Export
-
-WICHTIG:
-Blau bedeutet in V3.2 zunächst „Straße im Süd-Sektor / zu prüfen“ und NICHT automatisch „LADOG muss räumen“.
-Die endgültige Einteilung LADOG / Überfahrt / Fremdfahrzeug wird anhand des vorhandenen Winterdienstplans vorgenommen.
+- 313 echte Straßenabschnitte direkt aus der hochgeladenen OSM-Datei eingebaut
+- kein Overpass-Aufruf beim App-Start
+- Werkhof Gaswerkstrasse 2 direkt aus der OSM-Adressinformation: 47.5573183, 9.371705
+- Straßen antippbar und lokal klassifizierbar: LADOG / Überfahrt / Fremdfahrzeug / Prüfen
+- Klassifizierung bleibt per localStorage gespeichert
+- GPS-Test und JSON-Export
+- Datenabdeckung der gelieferten Datei: {'minlat': '47.5522600', 'minlon': '9.3570000', 'maxlat': '47.5689400', 'maxlon': '9.3907400'}
+- Fußwege, Radwege, Treppen, Feldwege sowie unbenannte Service-/Parkplatz-/Privatzufahrten zunächst ausgeblendet
