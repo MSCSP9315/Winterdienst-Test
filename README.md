@@ -1,25 +1,19 @@
-# Winterdienst Süd Tour – TEST V1
+# Winterdienst Süd Tour – TEST V2
+V2 ersetzt die schematische Karte durch eine echte interaktive OpenStreetMap/Leaflet-Karte.
 
-Erste Probefahrt-Version für GitHub Pages.
+## Upload
+Im bestehenden GitHub-Repository die vorhandenen Dateien durch diese Version ersetzen bzw. hochladen:
+- index.html
+- manifest.webmanifest
+- README.md
 
-## Enthalten
-- iPhone/Browser GPS-Aufzeichnung
-- Zeit, GPS-Punkte und gefahrene Distanz
-- Fehler-/Korrekturmeldungen mit aktueller GPS-Position
-- Pause / Tour beenden
-- JSON-Export der Testfahrt
-- Schematische V1-Sollroute als Platzhalter
+GitHub Pages bleibt auf `main` / `/(root)`.
 
-## Wichtig
-Die eingezeichnete Sollroute ist noch NICHT GPS-genau und darf nicht als verbindliche Navigation verwendet werden.
-Ziel dieser Version ist zunächst, die reale Probefahrt und Korrekturpunkte zu erfassen.
+## V2
+- echte interaktive Karte
+- Live-GPS
+- grüne Ist-Spur
+- GPS-Fehlerpunkte / Notizen
+- JSON-Export
 
-## GitHub Pages
-1. Neues Repository erstellen.
-2. `index.html` und `manifest.webmanifest` ins Hauptverzeichnis hochladen.
-3. Settings → Pages → Deploy from a branch → `main` / root.
-4. Die angezeigte HTTPS-Adresse auf dem iPhone in Safari öffnen.
-5. Standortzugriff erlauben.
-6. Optional: Teilen → Zum Home-Bildschirm.
-
-Nach der Probefahrt die exportierte JSON-Datei wieder in ChatGPT hochladen.
+Die GPS-genaue Sollroute der Süd-Tour ist noch nicht Bestandteil dieser Version.

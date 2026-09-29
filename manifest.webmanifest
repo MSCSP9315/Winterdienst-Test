@@ -1,9 +1,1 @@
-{
-  "name": "Winterdienst Süd Tour TEST V1",
-  "short_name": "Winterdienst V1",
-  "start_url": "./",
-  "display": "standalone",
-  "background_color": "#eef4f8",
-  "theme_color": "#102a43",
-  "description": "Probefahrt-Demo für die Süd-Tour mit LADOG T1400"
-}
+{"name":"Winterdienst Süd Tour TEST V2","short_name":"Winterdienst V2","start_url":"./","display":"standalone","background_color":"#edf4f8","theme_color":"#102f4f","description":"Probefahrt mit echter Karte und GPS"}
