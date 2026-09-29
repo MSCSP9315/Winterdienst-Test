@@ -1,73 +1,84 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#103453"><title>Winterdienst Süd Tour V3.1</title>
+<meta name="theme-color" content="#103453"><title>Winterdienst Süd Tour V3.2</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#edf4f8;color:#17344d;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-header{background:#103453;color:white;padding:14px 16px}header b{font-size:22px;display:block}header small{font-size:14px;opacity:.9}
-main{max-width:900px;margin:auto;padding:10px}.card{background:white;border-radius:16px;padding:11px;margin-bottom:10px;box-shadow:0 3px 12px #17344d20}
-#map{height:58vh;min-height:430px;border-radius:13px}.row{display:flex;gap:7px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-button{border:0;border-radius:11px;padding:12px 14px;font-size:15px;font-weight:800;color:white;background:#103453}.green{background:#159b58}.orange{background:#e78a15}.red{background:#d83c3c}.gray{background:#687e8e}
-.legend{display:flex;gap:11px;flex-wrap:wrap;margin-top:9px;font-size:12px;font-weight:800}.key{display:flex;gap:5px;align-items:center}.line{width:25px;height:6px;border-radius:4px}
+header{background:#103453;color:#fff;padding:14px 16px}header b{display:block;font-size:22px}header small{opacity:.9}
+main{max-width:920px;margin:auto;padding:10px}.card{background:#fff;border-radius:16px;padding:11px;margin-bottom:10px;box-shadow:0 3px 12px #17344d20}
+#map{height:61vh;min-height:450px;border-radius:13px}.row{display:flex;gap:7px;justify-content:space-between;align-items:center;flex-wrap:wrap}
+button{border:0;border-radius:11px;padding:12px 13px;font-weight:850;font-size:14px;color:#fff;background:#103453}.green{background:#159b58}.gray{background:#687e8e}.red{background:#d83c3c}.orange{background:#e78a15}
+.badge{background:#e5f0f7;border-radius:20px;padding:4px 8px;font-size:11px;font-weight:900}.info{font-size:12px;color:#607686;line-height:1.4}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:9px;font-size:12px;font-weight:800}.key{display:flex;gap:5px;align-items:center}.line{width:25px;height:6px;border-radius:4px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.stat{background:#f1f6f9;padding:9px;border-radius:10px}.stat small{display:block;color:#6b7f8e}.stat b{font-size:16px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.issue{background:white;color:#17344d;border:1px solid #cad8e0}
-textarea{width:100%;min-height:60px;border:1px solid #cad8e0;border-radius:9px;padding:9px;font-size:16px;margin-top:8px}
-.info{font-size:12px;line-height:1.4;color:#607686}.badge{display:inline-block;padding:4px 8px;border-radius:20px;background:#e6f0f7;font-size:11px;font-weight:900}
-@media(max-width:550px){.stats{grid-template-columns:1fr 1fr}#map{height:55vh}}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.issue{background:#fff;color:#17344d;border:1px solid #cad8e0}textarea{width:100%;min-height:58px;border:1px solid #cad8e0;border-radius:9px;padding:9px;font-size:16px;margin-top:8px}
+@media(max-width:550px){.stats{grid-template-columns:1fr 1fr}#map{height:57vh}}
 </style></head><body>
-<header><b>❄️ Winterdienst · Süd Tour</b><small>LADOG T1400 · TEST V3.1 · feste Startposition + sichtbare Sollabschnitte</small></header>
+<header><b>❄️ Winterdienst · Süd Tour</b><small>LADOG T1400 · TEST V3.2 · komplettes Strassennetz im Süd-Sektor</small></header>
 <main>
-<div class="card"><div class="row"><div><span class="badge">V3.1 KORREKTUR</span><div id="status" style="font-weight:800;margin-top:6px">Bereit – Werkhof und Prüfabschnitte sind fest eingebaut.</div></div><button id="start" class="green">GPS starten</button></div></div>
+<div class="card"><div class="row"><div><span class="badge">V3.2 STRASSENNETZ</span><div id="status" style="font-weight:850;margin-top:6px">Süd-Sektor wird geladen …</div></div><button id="gps" class="green">GPS starten</button></div>
+<p class="info">Neu: keine geraden Verbindungslinien. V3.2 lädt die echten OSM-Strassen innerhalb des Süd-Sektors. Die Klassifizierung „LADOG / Überfahrt / Fremdfahrzeug“ bleibt Prüfarbeit – der Plan ist dafür die Referenz.</p></div>
 <div class="card"><div id="map"></div>
-<div class="legend"><span class="key"><i class="line" style="background:#087bd1"></i>Soll / räumen</span><span class="key"><i class="line" style="background:#159b58"></i>Ist-GPS</span><span class="key"><i class="line" style="background:#e78a15"></i>Überfahrt / prüfen</span><span class="key"><i class="line" style="background:#d83c3c"></i>Fremdfahrzeug</span></div>
-<div class="row" style="margin-top:9px"><button id="overview" class="gray">🗺 Tourübersicht</button><button id="me" class="gray">◎ Zu mir</button><button id="wh" class="gray">🏠 Werkhof</button></div></div>
-<div class="card stats"><div class="stat"><small>Zeit</small><b id="time">00:00:00</b></div><div class="stat"><small>GPS-Punkte</small><b id="points">0</b></div><div class="stat"><small>Ist-Strecke</small><b id="distance">0.00 km</b></div><div class="stat"><small>Meldungen</small><b id="count">0</b></div></div>
-<div class="card"><b>📍 Korrektur an GPS-Position</b><div class="grid" style="margin-top:8px">
-<button class="issue" data-k="Strecke falsch">⚠ Strecke falsch</button><button class="issue" data-k="Strasse fehlt">＋ Strasse fehlt</button>
-<button class="issue" data-k="Nicht räumen">⛔ Nicht räumen</button><button class="issue" data-k="Fahrtrichtung falsch">↔ Richtung falsch</button>
-<button class="issue" data-k="Wenden problematisch">↩ Wenden problematisch</button><button class="issue" data-k="Nur Überfahrt">🟠 Nur Überfahrt</button></div>
+<div class="legend"><span class="key"><i class="line" style="background:#087bd1"></i>Sektor-Strasse / zu prüfen</span><span class="key"><i class="line" style="background:#159b58"></i>Ist-GPS</span><span class="key"><i class="line" style="background:#e78a15"></i>Überfahrt</span><span class="key"><i class="line" style="background:#d83c3c"></i>Fremdfahrzeug</span></div>
+<div class="row" style="margin-top:9px"><button id="overview" class="gray">🗺 Sektor</button><button id="me" class="gray">◎ Zu mir</button><button id="wh" class="gray">🏠 Werkhof</button><button id="reload">↻ Strassen neu laden</button></div></div>
+<div class="card stats"><div class="stat"><small>Strassenobjekte</small><b id="roads">–</b></div><div class="stat"><small>GPS-Punkte</small><b id="points">0</b></div><div class="stat"><small>Ist-Strecke</small><b id="distance">0.00 km</b></div><div class="stat"><small>Meldungen</small><b id="count">0</b></div></div>
+<div class="card"><b>📍 Korrektur vor Ort</b><div class="grid" style="margin-top:8px">
+<button class="issue" data-k="LADOG räumen">🔵 LADOG räumen</button><button class="issue" data-k="Strasse fehlt">＋ Strasse fehlt</button>
+<button class="issue" data-k="Nicht räumen">⛔ Nicht räumen</button><button class="issue" data-k="Fremdfahrzeug">🔴 Fremdfahrzeug</button>
+<button class="issue" data-k="Nur Überfahrt">🟠 Nur Überfahrt</button><button class="issue" data-k="Wenden problematisch">↩ Wenden problematisch</button></div>
 <textarea id="note" placeholder="Bemerkung …"></textarea><button id="noteBtn" class="orange" style="width:100%">📍 Notiz speichern</button></div>
 <div class="card row"><button id="pause" class="gray" disabled>⏸ Pause</button><button id="finish" class="red" disabled>■ Beenden</button><button id="export" disabled>⬇ Export JSON</button></div>
-<p class="info"><b>Prüffassung:</b> Der Werkhof ist fest auf Gaswerkstrasse 2 gesetzt. Die blauen Abschnitte sind als sichtbare V3.1-Prüfgeometrie eingebaut und bleiben auch sichtbar, wenn ein externer Routingdienst ausfällt. Sie sind noch nicht als verbindliche Räumroute freigegeben.</p>
+<p class="info"><b>Wichtig:</b> Die blauen Straßen bedeuten in V3.2 zunächst „Straße im digitalisierten Süd-Sektor“, nicht automatisch „räumen“. Rot/orange aus dem Winterdienstplan müssen wir anschließend sauber klassifizieren. Damit wird keine nicht verifizierte Straße als freigegebene Räumstrecke ausgegeben.</p>
 </main>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script>
 (()=>{
-const W=[47.557222,9.372222]; // 47°33'26"N 09°22'20"E – fixed V3.1 start
-const map=L.map('map').setView(W,15);
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
-const $=x=>document.getElementById(x);
-const wh=L.marker(W).addTo(map).bindPopup('<b>🏠 Werkhof</b><br>Gaswerkstrasse 2<br>Start / Ziel').openPopup();
-
-/* Fixed test geometry. Each section is independent so a failure can never hide the whole tour. */
-const sections=[
- {n:'1 Industriegebiet',c:'#087bd1',p:[[47.55722,9.37222],[47.5582,9.3698],[47.5590,9.3735],[47.5582,9.3770],[47.5569,9.3752],[47.55722,9.37222]]},
- {n:'2 Eigenheim',c:'#087bd1',p:[[47.5590,9.3735],[47.5613,9.3748],[47.5633,9.3770],[47.5650,9.3744],[47.5630,9.3708],[47.5606,9.3705]]},
- {n:'3 Huebzelg',c:'#087bd1',p:[[47.5630,9.3708],[47.5652,9.3690],[47.5672,9.3698],[47.5682,9.3665],[47.5668,9.3638],[47.5644,9.3652],[47.5630,9.3708]]},
- {n:'4 Hueb / Holzgass',c:'#087bd1',p:[[47.5644,9.3652],[47.5664,9.3618],[47.5682,9.3595],[47.5680,9.3547],[47.5657,9.3520],[47.5638,9.3544],[47.5644,9.3652]]},
- {n:'5 Westlicher Wohnbereich',c:'#087bd1',p:[[47.5638,9.3544],[47.5620,9.3518],[47.5606,9.3535],[47.5602,9.3578],[47.5618,9.3602],[47.5638,9.3544]]},
- {n:'6 Hotterdingen',c:'#087bd1',p:[[47.5602,9.3578],[47.5583,9.3550],[47.5562,9.3518],[47.5548,9.3480],[47.5560,9.3548],[47.5583,9.3550]]},
- {n:'7 Kastauden / Oberhofe',c:'#087bd1',p:[[47.5583,9.3550],[47.5595,9.3580],[47.5600,9.3610],[47.5581,9.3630],[47.5560,9.3602],[47.5583,9.3550]]},
- {n:'8 Südlicher Rand / Halde',c:'#087bd1',p:[[47.5560,9.3602],[47.5547,9.3635],[47.5554,9.3670],[47.5566,9.3695],[47.55722,9.37222]]}
+const W=[47.55722,9.37222];
+/* Approximate sector boundary traced from the supplied South-sector planning map.
+   Purpose: fetch the real road geometry inside the sector; classification follows later. */
+const SECTOR=[
+ [47.5540,9.3470],[47.5562,9.3500],[47.5602,9.3502],[47.5647,9.3510],
+ [47.5683,9.3520],[47.5700,9.3595],[47.5700,9.3705],[47.5695,9.3790],
+ [47.5650,9.3810],[47.5612,9.3798],[47.5588,9.3782],[47.5563,9.3770],
+ [47.5544,9.3715],[47.5535,9.3625],[47.5540,9.3470]
 ];
-const group=L.featureGroup().addTo(map);
-sections.forEach((s,i)=>{let l=L.polyline(s.p,{color:s.c,weight:6,opacity:.86}).addTo(group).bindTooltip(s.n);L.circleMarker(s.p[0],{radius:9,color:'#fff',weight:2,fillColor:'#087bd1',fillOpacity:1}).addTo(group).bindTooltip(String(i+1),{permanent:true,direction:'center',className:'num'})});
-// transfer corridors – deliberately dashed and distinct
-L.polyline([[47.55722,9.37222],[47.5566,9.3695],[47.5547,9.3635]],{color:'#e78a15',weight:4,dashArray:'9 9'}).addTo(group).bindTooltip('Überfahrt / prüfen');
-map.fitBounds(group.getBounds(),{padding:[20,20]});
+const map=L.map('map').setView(W,15),$=x=>document.getElementById(x);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
+L.marker(W).addTo(map).bindPopup('<b>🏠 Werkhof</b><br>Gaswerkstrasse 2<br>Start / Ziel');
+const sector=L.polygon(SECTOR,{color:'#087bd1',weight:2,dashArray:'7 7',fillColor:'#2b9ee8',fillOpacity:.055}).addTo(map);
+map.fitBounds(sector.getBounds(),{padding:[15,15]});
+let roadLayer=L.layerGroup().addTo(map);
+function pip(p,poly){let x=p[1],y=p[0],inside=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){let xi=poly[i][1],yi=poly[i][0],xj=poly[j][1],yj=poly[j][0];let hit=((yi>y)!=(yj>y))&&(x<(xj-xi)*(y-yi)/(yj-yi)+xi);if(hit)inside=!inside}return inside}
+async function loadRoads(){
+ $('status').textContent='Echte Straßen des Süd-Sektors werden geladen …';roadLayer.clearLayers();$('roads').textContent='…';
+ const poly=SECTOR.map(p=>p[0]+' '+p[1]).join(' ');
+ const q=`[out:json][timeout:25];way["highway"](poly:"${poly}");out tags geom;`;
+ const endpoints=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter'];
+ let data=null;
+ for(const ep of endpoints){try{let r=await fetch(ep,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:'data='+encodeURIComponent(q)});if(r.ok){data=await r.json();break}}catch(e){}}
+ if(!data){$('status').textContent='Straßendaten konnten nicht geladen werden – Internet/Overpass prüfen.';$('roads').textContent='0';return}
+ const exclude=new Set(['footway','path','cycleway','steps','pedestrian','bridleway','corridor','construction','proposed']);
+ let n=0;
+ for(const w of data.elements||[]){let h=w.tags&&w.tags.highway;if(!w.geometry||exclude.has(h))continue;let pts=w.geometry.map(g=>[g.lat,g.lon]);if(!pts.some(p=>pip(p,SECTOR)))continue;
+   let name=(w.tags&&w.tags.name)||'unbenannte Straße';let cls=(w.tags&&w.tags.highway)||'';
+   L.polyline(pts,{color:'#087bd1',weight:5,opacity:.82}).addTo(roadLayer).bindTooltip(name+' · '+cls);n++;
+ }
+ $('roads').textContent=n;$('status').textContent=n+' Straßenobjekte im Süd-Sektor geladen · jetzt klassifizieren/prüfen';
+}
+loadRoads();$('reload').onclick=loadRoads;$('overview').onclick=()=>map.fitBounds(sector.getBounds(),{padding:[15,15]});$('wh').onclick=()=>map.setView(W,18);
 
-let actual=L.polyline([],{color:'#159b58',weight:7,opacity:.95}).addTo(map),marker=null,accuracy=null,last=null,track=[],reports=[],dist=0,watch=null,startTime=null,paused=false,timer=null;
+let actual=L.polyline([],{color:'#159b58',weight:7}).addTo(map),marker=null,acc=null,last=null,track=[],reports=[],dist=0,watch=null,paused=false,startTime=null,timer=null;
 function hav(a,b){const R=6371000,r=Math.PI/180,dlat=(b.lat-a.lat)*r,dlon=(b.lon-a.lon)*r,q=Math.sin(dlat/2)**2+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin(dlon/2)**2;return 2*R*Math.asin(Math.sqrt(q))}
-function save(){localStorage.setItem('wd_sued_v31',JSON.stringify({startTime,dist,track,reports}))}
-function tick(){if(!startTime||paused)return;let s=Math.floor((Date.now()-startTime)/1000);$('time').textContent=[Math.floor(s/3600),Math.floor(s%3600/60),s%60].map(x=>String(x).padStart(2,'0')).join(':')}
-function pos(p){if(paused)return;const x={lat:p.coords.latitude,lon:p.coords.longitude,accuracy:p.coords.accuracy,time:new Date().toISOString()};if(last){let d=hav(last,x);if(d<2)return;if(d<200)dist+=d}last=x;track.push(x);actual.addLatLng([x.lat,x.lon]);if(!marker){marker=L.circleMarker([x.lat,x.lon],{radius:9,color:'#fff',weight:3,fillColor:'#103453',fillOpacity:1}).addTo(map);accuracy=L.circle([x.lat,x.lon],{radius:x.accuracy,color:'#087bd1',weight:1,fillOpacity:.05}).addTo(map)}else{marker.setLatLng([x.lat,x.lon]);accuracy.setLatLng([x.lat,x.lon]).setRadius(x.accuracy)}$('points').textContent=track.length;$('distance').textContent=(dist/1000).toFixed(2)+' km';$('status').textContent='GPS aktiv · Genauigkeit ±'+Math.round(x.accuracy)+' m';save()}
-$('start').onclick=()=>{if(watch!==null)return;startTime=Date.now();watch=navigator.geolocation.watchPosition(pos,e=>$('status').textContent='GPS-Fehler: '+e.message,{enableHighAccuracy:true,maximumAge:1000,timeout:15000});timer=setInterval(tick,1000);$('start').disabled=true;$('pause').disabled=false;$('finish').disabled=false;$('status').textContent='GPS wird gestartet …'};
-$('overview').onclick=()=>map.fitBounds(group.getBounds(),{padding:[20,20]});$('wh').onclick=()=>map.setView(W,18);$('me').onclick=()=>last&&map.setView([last.lat,last.lon],18);
+function save(){localStorage.setItem('wd_sued_v32',JSON.stringify({startTime,dist,track,reports}))}
+function pos(p){if(paused)return;let x={lat:p.coords.latitude,lon:p.coords.longitude,accuracy:p.coords.accuracy,time:new Date().toISOString()};if(last){let d=hav(last,x);if(d<2)return;if(d<200)dist+=d}last=x;track.push(x);actual.addLatLng([x.lat,x.lon]);if(!marker){marker=L.circleMarker([x.lat,x.lon],{radius:9,color:'#fff',weight:3,fillColor:'#103453',fillOpacity:1}).addTo(map);acc=L.circle([x.lat,x.lon],{radius:x.accuracy,color:'#087bd1',weight:1,fillOpacity:.05}).addTo(map)}else{marker.setLatLng([x.lat,x.lon]);acc.setLatLng([x.lat,x.lon]).setRadius(x.accuracy)}$('points').textContent=track.length;$('distance').textContent=(dist/1000).toFixed(2)+' km';$('status').textContent='GPS aktiv · ±'+Math.round(x.accuracy)+' m';save()}
+function tick(){if(!startTime||paused)return}
+$('gps').onclick=()=>{if(watch!==null)return;startTime=Date.now();watch=navigator.geolocation.watchPosition(pos,e=>$('status').textContent='GPS-Fehler: '+e.message,{enableHighAccuracy:true,maximumAge:1000,timeout:15000});timer=setInterval(tick,1000);$('gps').disabled=true;$('pause').disabled=false;$('finish').disabled=false};
+$('me').onclick=()=>last&&map.setView([last.lat,last.lon],18);
 function report(k,n=''){reports.push({type:k,note:n,position:last,time:new Date().toISOString()});$('count').textContent=reports.length;if(last)L.marker([last.lat,last.lon]).addTo(map).bindPopup('<b>'+k+'</b><br>'+n);save();$('status').textContent='Gespeichert: '+k}
 document.querySelectorAll('.issue').forEach(b=>b.onclick=()=>{report(b.dataset.k,$('note').value.trim());$('note').value=''});
 $('noteBtn').onclick=()=>{let n=$('note').value.trim();if(n){report('Notiz',n);$('note').value=''}};
-$('pause').onclick=()=>{paused=!paused;$('pause').textContent=paused?'▶ Fortsetzen':'⏸ Pause';$('status').textContent=paused?'Aufzeichnung pausiert':'GPS aktiv'};
+$('pause').onclick=()=>{paused=!paused;$('pause').textContent=paused?'▶ Fortsetzen':'⏸ Pause'};
 $('finish').onclick=()=>{if(watch!==null)navigator.geolocation.clearWatch(watch);watch=null;clearInterval(timer);$('pause').disabled=true;$('finish').disabled=true;$('export').disabled=false;$('status').textContent='Probefahrt beendet · Export bereit'};
-$('export').onclick=()=>{let d={version:'3.1',tour:'Süd Tour',vehicle:'LADOG T1400',start_finish:{name:'Werkhof Gaswerkstrasse 2',lat:W[0],lon:W[1]},status:'Prüffassung',track,reports,distance_m:Math.round(dist)};let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(d,null,2)],{type:'application/json'}));a.download='Winterdienst_Sued_V31_'+new Date().toISOString().replace(/[:.]/g,'-')+'.json';a.click()}
+$('export').onclick=()=>{let d={version:'3.2',tour:'Süd Tour',vehicle:'LADOG T1400',sector:SECTOR,start_finish:{name:'Werkhof Gaswerkstrasse 2',lat:W[0],lon:W[1]},track,reports,distance_m:Math.round(dist),note:'OSM sector roads are candidates; winter-service classification not yet approved.'};let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(d,null,2)],{type:'application/json'}));a.download='Winterdienst_Sued_V32_'+new Date().toISOString().replace(/[:.]/g,'-')+'.json';a.click()}
 })();
 </script></body></html>
