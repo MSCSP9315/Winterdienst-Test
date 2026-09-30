@@ -1,11 +1,13 @@
-# Winterdienst Süd – V3.6
-- 207 lokale Straßenabschnitte innerhalb des aktuellen Süd-Arbeitsbereichs
-- übernimmt V3.5 Räumprofile
-- breite Straßen = zwei Arbeitsgänge in Gegenrichtung
-- wirtschaftliche Reihenfolge orientiert jeden nächsten Abschnitt am näheren Endpunkt
-- aktive Räumstrecke gelb, erledigte Straße grün
-- Soll-Räumkilometer und GPS-Kilometer
-- Werkhof Gaswerkstrasse 2
+# Winterdienst Süd – V3.7
+Durchgehende straßennetzbasierte Test-Routenlogik.
 
-WICHTIG: Die Sektorgrenze ist der aktuelle Planungsstand, nicht amtlich vermessene Geometrie.
-Der hochgeladene OSM-Ausschnitt beginnt bei Längengrad 9.3570000; der westliche Rand des Arbeitsbereichs reicht weiter. Fehlende Geometrie wird nicht erfunden.
+- 207 Räumabschnitte im aktuellen Süd-Arbeitsbereich.
+- V3.5/V3.6 Räumprofile werden übernommen.
+- Breite Straßen erzeugen zwei gerichtete Räumgänge.
+- Der zweite Durchgang derselben breiten Straße wird bei vorhandenen Alternativen bewusst nicht sofort als U-Turn zurückgefahren.
+- Zwischen Räumaufträgen wird auf dem vorhandenen Straßengraph eine kürzeste Verbindungsfahrt berechnet und orange als Überfahrt dargestellt.
+- Start und Rückkehr: Werkhof Gaswerkstrasse 2.
+- Kantons-/höherklassige Straßen können intern als notwendige Verbindung dienen, werden aber nicht als Räumauftrag angezeigt.
+- Explizit private/gesperrte OSM-Wege sind aus dem Routinggraph ausgeschlossen.
+
+Hinweis: Der hochgeladene OSM-Ausschnitt deckt den westlichen Rand des ursprünglichen Süd-Plans nicht vollständig ab.
