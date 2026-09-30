@@ -1,28 +1,29 @@
-# Winterdienst Süd V4.1.3 – geprüfter erster Teststand
+# Winterdienst Süd V4.2 – optimierter Praxistest
 
-Diese Version basiert auf V4.1.2 und wurde vor der Ausgabe nochmals gezielt stabilisiert.
+Diese Version ist für den ersten möglichst realistischen Routentest gedacht.
 
-Geprüft / verbessert:
-- Desktop-Ansicht
-- iPhone-Größe (390 × 844)
-- iPad Hochformat (834 × 1112)
-- iPad Querformat (1112 × 834)
-- normale Kartenansicht lässt sich mobil wieder vertikal scrollen
-- Vollbild-FZ-Navi sperrt Scrollen nur während der Navigation
-- „Zur Kartenansicht“ gibt Scrollen wieder frei
-- FZ-Navi bleibt im aktuellen Schritt, wenn zwischen Karte und Navi gewechselt wird
-- Tourliste öffnet im Navi
-- Straßen-Popup passt auf kleine Displays
-- Route berechnen funktioniert
-- Navi starten / Weiter / Zurück funktionieren
-- 142 Räumabschnitte werden verarbeitet
-- Live-GPS-Status, GPS-Genauigkeit, Fahrzeug folgen und Abweichungswarnung bleiben enthalten
-- GPS-Fehler/abgelehnte Standortfreigabe kann jetzt sauber erneut versucht werden
-- iPad Querformat wurde kompakter gemacht, damit die Bedienelemente besser erreichbar sind
-- Safe-Area-Abstand für iPhone/iPad ergänzt
+Verbessert gegenüber V4.1.3:
+- globale Optimierung der gesamten Tour statt nur "nächste günstige Straße"
+- mehrere Startvarianten + lokale Verbesserungsschritte
+- flexible Fahrtrichtung bei normalen Räumstraßen
+- breite Straßen bleiben zwei getrennte gerichtete Räumgänge
+- Gegenrichtung breiter Straßen wird wirtschaftlich in die Gesamttour eingeordnet
+- Einbahnstraßen aus OSM werden beim internen Routing berücksichtigt
+- echte kürzeste Verbindungswege über das Straßennetz
+- Start und Rückkehr Werkhof Gaswerkstrasse 2
+- Vergleich mit einer einfachen Schnellroute: Leerfahrt-Ersparnis wird angezeigt
+- Live-GPS, automatisches Mitfahren, Abweichungswarnung, Kartenansicht und FZ-Navi aus V4.1.3 bleiben erhalten
+- akzeptierter Süd-Sektor bleibt unverändert
+
+Datengrundlage:
+- 142 Räumabschnitte im aktuellen Süd-Sektor
+- 1065 routbare OSM-Wege im Ausschnitt
+- 201 relevante End-/Startknoten für die globale Optimierung
+- Distanzmatrix einmalig vorab berechnet, damit die Optimierung auch auf dem Tablet schnell bleibt
 
 Wichtig:
-Die GPS-Funktion kann am PC nur technisch geprüft werden. Der echte GNSS-Test muss auf eurem Tablet über HTTPS/GitHub Pages erfolgen.
+Die App kann die wirtschaftlichste Route nur für die Straßen optimieren, die als "räumen" bzw. "beide Richtungen" markiert sind.
+Vor dem echten Wintereinsatz müssen die tatsächlichen Räumprofile (breit / nur Überfahrt / nicht räumen) einmal fachlich bestätigt werden.
 
 GitHub:
-Für den Test reicht es, die index.html aus dieser Version ins Repository zu übernehmen.
+Für den Test genügt die neue index.html.
