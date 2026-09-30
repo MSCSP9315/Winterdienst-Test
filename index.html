@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Winterdienst Süd V4.1</title>
+<title>Winterdienst Süd V4.1.1</title>
 <style>
 *{box-sizing:border-box}
 :root{
@@ -70,6 +70,159 @@ svg{width:100%;height:100%;display:block}
 .liveVehicle{font-size:27px;font-weight:900;paint-order:stroke;stroke:#fff;stroke-width:5px;fill:#ff8d15;vector-effect:non-scaling-stroke}
 .liveHeading{stroke:#ff8d15;stroke-width:4;vector-effect:non-scaling-stroke}
 
+
+.mobileNavBar{display:none}
+
+@media(max-width:900px){
+  body{overflow:hidden}
+  #navScreen{height:100dvh}
+  .navTop{
+    height:58px;
+    padding:0 12px;
+    gap:8px;
+  }
+  .navBrand{gap:7px;font-size:15px;min-width:0}
+  .navBrand strong{font-size:18px;white-space:nowrap}
+  .navBrand .snow{font-size:24px}
+  .navBrand span:nth-of-type(2){display:none}
+  .navVehicle{font-size:0;gap:0}
+  .navVehicle span{font-size:25px}
+  .navClock{font-size:17px}
+  .navBody{
+    display:block;
+    position:relative;
+    flex:1;
+    min-height:0;
+  }
+  .navMapArea{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+  }
+  #navMap{width:100%;height:100%}
+  .instructionPane{
+    position:absolute;
+    inset:0;
+    z-index:30;
+    padding:0;
+    background:transparent;
+    border:0;
+    pointer-events:none;
+    overflow:visible;
+  }
+  .turnBox{
+    position:absolute;
+    left:10px;
+    right:10px;
+    top:10px;
+    margin:0;
+    padding:10px 12px 11px;
+    border:1px solid #476073;
+    border-radius:12px;
+    background:#071c2beF;
+    box-shadow:0 4px 18px #0006;
+    pointer-events:auto;
+  }
+  .turnRow{
+    grid-template-columns:68px 1fr;
+    gap:7px;
+  }
+  .bigArrow{font-size:58px}
+  .distance{font-size:37px}
+  .action{font-size:20px;margin-top:2px}
+  .streetLine{font-size:18px;margin-top:4px}
+  .infoRows{display:none}
+  .instructionPane > .navSideBtn{display:none}
+  .gpsStatus{
+    position:absolute;
+    right:12px;
+    top:142px;
+    width:auto;
+    min-width:160px;
+    padding:7px 9px;
+    font-size:11px;
+    pointer-events:auto;
+    background:#071c2be8;
+  }
+  .gpsStatus .left{gap:6px}
+  .gpsStatus b{font-size:12px}
+  .gpsStatus small{display:none}
+  #gpsAccuracy{font-size:12px}
+  .navMapControls{top:142px;left:10px;right:auto}
+  .navMapControls .btn{width:40px;height:40px;font-size:20px}
+  .navLegend{display:none}
+  .navFooter{
+    left:10px;
+    right:10px;
+    bottom:72px;
+    max-width:none;
+    padding:7px 9px;
+    gap:7px;
+    background:#071c2beF;
+  }
+  .navFooter b{font-size:14px}
+  .navFooter small{font-size:10px}
+  .simBtns{gap:5px}
+  .simBtns .btn{padding:8px 10px;font-size:13px}
+  .mobileNavBar{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:6px;
+    position:absolute;
+    left:10px;
+    right:10px;
+    bottom:10px;
+    z-index:45;
+    padding:6px;
+    border:1px solid #42586a;
+    border-radius:13px;
+    background:#071c2bf2;
+    box-shadow:0 4px 18px #0007;
+  }
+  .mobileBtn{
+    min-width:0;
+    height:50px;
+    border-radius:9px;
+    background:#123149;
+    color:#fff;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:1px;
+    font-weight:800;
+  }
+  .mobileBtn span{font-size:19px;line-height:1}
+  .mobileBtn small{font-size:10px}
+  .drawer{
+    top:58px;
+    width:100%;
+    left:0;
+    right:0;
+  }
+  .drawerHead{padding:12px}
+  .drawerList{padding-bottom:80px}
+  .deviation{
+    top:210px;
+    max-width:calc(100% - 100px);
+    font-size:12px;
+    padding:8px 10px;
+    text-align:center;
+  }
+}
+
+@media(max-width:480px){
+  .navBrand strong:first-of-type{font-size:17px}
+  .tourOrange{font-size:17px!important}
+  .navTop .navVehicle{display:none}
+  .turnBox{left:8px;right:8px;top:8px}
+  .gpsStatus{top:136px;right:8px}
+  .navMapControls{top:136px;left:8px}
+  .navFooter{left:8px;right:8px;bottom:70px}
+  .mobileNavBar{left:8px;right:8px;bottom:8px}
+}
+
 @media(max-width:1050px){
  main{grid-template-columns:1fr}.mapcard{grid-row:auto}#mapwrap{height:64vh;min-height:500px}.sheet{left:10px;right:10px;width:auto}
  .navBody{grid-template-columns:350px 1fr}.distance{font-size:42px}.action{font-size:23px}.streetLine{font-size:22px}
@@ -82,7 +235,7 @@ svg{width:100%;height:100%;display:block}
 <div id="overview">
 <header>
   <div><b>❄️ Winterdienst · Süd Tour</b><div>LADOG T1400 · Kartenansicht</div></div>
-  <span class="ver">V4.1 PC · LIVE GPS</span>
+  <span class="ver">V4.1.1 · RESPONSIVE</span>
 </header>
 <main>
 <section class="card mapcard">
@@ -2600,6 +2753,14 @@ svg{width:100%;height:100%;display:block}
     </div>
   </div>
 
+
+  <div class="mobileNavBar" id="mobileNavBar">
+    <button class="mobileBtn" id="mBackMap"><span>🗺</span><small>Karte</small></button>
+    <button class="mobileBtn" id="mTour"><span>☷</span><small>Tour</small></button>
+    <button class="mobileBtn" id="mGps"><span>📡</span><small id="mGpsText">GPS</small></button>
+    <button class="mobileBtn" id="mFollow"><span>◎</span><small id="mFollowText">Folgen</small></button>
+  </div>
+
   <aside class="drawer" id="tourDrawer">
     <div class="drawerHead"><b>Tourliste</b><button class="btn red" id="closeTour">✕</button></div>
     <div class="drawerList" id="drawerList"></div>
@@ -2903,6 +3064,18 @@ $('gpsToggle').onclick=()=>{if(gpsWatch===null)startGps();else stopGps()};
 $('followToggle').onclick=()=>{followVehicle=!followVehicle;$('followText').textContent='Fahrzeug folgen: '+(followVehicle?'EIN':'AUS');if(followVehicle)focusActive()};
 $('openTour').onclick=()=>$('tourDrawer').classList.add('open');
 $('closeTour').onclick=()=>$('tourDrawer').classList.remove('open');
+
+$('mBackMap').onclick=()=>$('backMap').click();
+$('mTour').onclick=()=>$('openTour').click();
+$('mGps').onclick=()=>{
+  $('gpsToggle').click();
+  setTimeout(()=>{$('mGpsText').textContent=gpsWatch===null?'GPS':'GPS an'},50)
+};
+$('mFollow').onclick=()=>{
+  $('followToggle').click();
+  $('mFollowText').textContent=followVehicle?'Folgen':'Frei'
+};
+
 $('fzNext').onclick=()=>{if(navStarted&&navIndex<navSteps.length){navIndex++;autoAdvanceHits=0;syncDone();showNav()}};
 $('fzPrev').onclick=()=>{if(navStarted&&navIndex>0){navIndex--;autoAdvanceHits=0;syncDone();showNav()}};
 
@@ -2921,7 +3094,7 @@ window.addEventListener('mousemove',e=>{if(!drag)return;let dx=e.clientX-last[0]
 $('map').addEventListener('wheel',e=>{e.preventDefault();let f=e.deltaY<0?.85:1.18,r=$('map').getBoundingClientRect(),mx=vb.x+(e.clientX-r.left)/r.width*vb.w,my=vb.y+(e.clientY-r.top)/r.height*vb.h;vb.x=mx-(mx-vb.x)*f;vb.y=my-(my-vb.y)*f;vb.w*=f;vb.h*=f;setVB()},{passive:false});
 
 setInterval(()=>{$('clock').textContent=new Date().toLocaleTimeString('de-CH',{hour:'2-digit',minute:'2-digit'})},1000);
-$('fit').click();updateGpsStatus('off','Simulation / manuelle Schritte');$('diag').textContent='✓ V4.1 Karte + Navi + Live-GPS geladen';
+$('fit').click();updateGpsStatus('off','Simulation / manuelle Schritte');$('diag').textContent='✓ V4.1.1 Responsive + Live-GPS geladen';
 </script>
 </body>
 </html>
